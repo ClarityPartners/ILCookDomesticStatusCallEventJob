@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Classification: Case Manager -->
+<!-- ************************************************************************************* -->
+<!-- Copyright (c) 2007 by Tyler Technologies.                                             -->
+<!--                                                                                       -->
+<!-- This program code is furnished under a license and may be used and copied only in     -->
+<!-- accordance with the terms of such license and with the inclusion of the above         -->
+<!-- copyright notice.  This program code or any other copies thereof may not be provided  -->
+<!-- or otherwise made available to any other persons.                                     -->
+<!-- ************************************************************************************* -->
+<!--                                                                                       -->
+<!-- 10/22/2007 - MDG - Created                                                            -->
+<!-- 01/21/2009 - CDW - Changed HearingPriority to optional                                -->
+<!--                                                                                       -->
+<!-- ************************************************************************************* -->
+
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" 
+           elementFormDefault="qualified">
+  <xs:include schemaLocation="BaseTypes.xsd"/>
+
+  <xs:simpleType name="LOCAL.MESSAGETYPENAME">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AddHearing"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="LOCAL.HEARINGPRIORITY">
+    <xs:restriction base="xs:integer">
+      <xs:pattern value="^([1-9]|[1-9]\d|100)$"/>
+    </xs:restriction>  
+  </xs:simpleType>
+
+  <xs:complexType name="Justice.Case.Hearing.Interpreter">
+    <xs:choice>
+      <xs:element name="NotRequired" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="Required" minOccurs="1" maxOccurs="1">      
+        <xs:complexType>
+          <xs:choice>
+            <xs:element name="Interpreter" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="InterpreterID" type="BASE.USERCODE" minOccurs="0" maxOccurs="1"/>
+                  <xs:element name="InterpreterLanguage" type="BASE.USERCODE" minOccurs="1" maxOccurs="1"/>
+                </xs:sequence>
+              </xs:complexType>              
+            </xs:element>
+            <xs:element name="None" minOccurs="0" maxOccurs="1"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>     
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="Message"  block="#all" final="#all">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CaseID"                 type="BASE.REQUIREDPOSINT"                minOccurs="1" maxOccurs="1"/>
+        <xs:element name="CourtSessionBlockID"    type="BASE.REQUIREDPOSINT"                minOccurs="1" maxOccurs="1"/>
+        <xs:element name="HearingType"            type="BASE.USERCODE"                      minOccurs="1" maxOccurs="1"/>
+        <xs:element name="OffSetMinutes"          type="BASE.REQUIREDNONNEGINT"             minOccurs="1" maxOccurs="1"/>
+        <xs:element name="HearingDuration"        type="BASE.REQUIREDPOSINT"                minOccurs="0" maxOccurs="1"/>
+        <xs:element name="HearingPriority"        type="LOCAL.HEARINGPRIORITY"              minOccurs="0" maxOccurs="1"/>
+        <xs:element name="HearingPrintNoticeDate" type="BASE.REQUIREDDATE"                  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="AllowOverbook"          type="BASE.REQUIREDTEXTBOOLMIXEDCASETRUE" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="InterpreterNeeded"      type="Justice.Case.Hearing.Interpreter"   minOccurs="1" maxOccurs="1"/>
+        <xs:element name="Comment"                type="BASE.STRING"                        minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>      
+      
+      <xs:attribute name="MessageType"           type="LOCAL.MESSAGETYPENAME" use="required" />
+      <xs:attribute name="NodeID"                type="BASE.REQUIREDPOSINT"   use="required" />
+      <xs:attribute name="ReferenceNumber"       type="BASE.REQUIREDSTRING50" use="required" />
+      <xs:attribute name="UserID"                type="BASE.REQUIREDPOSINT"   use="required" />
+      <xs:attribute name="Source"				         type="BASE.REQUIREDSTRING50" use="required" />
+    </xs:complexType>
+    
+  </xs:element>
+
+</xs:schema>

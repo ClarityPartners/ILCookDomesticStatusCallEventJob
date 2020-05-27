@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Classification: Case Manager -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" 
+           elementFormDefault="qualified">
+  <!-- ************************************************************************************* -->
+  <!-- Copyright (c) 2007 by Tyler Technologies.                                             -->
+  <!--                                                                                       -->
+  <!-- This program code is furnished under a license and may be used and copied only in     -->
+  <!-- accordance with the terms of such license and with the inclusion of the above         -->
+  <!-- copyright notice.  This program code or any other copies thereof may not be provided  -->
+  <!-- or otherwise made available to any other persons.                                     -->
+  <!-- ************************************************************************************* -->
+  <!--                                                                                       -->
+  <!-- HISTORY                                                                               -->
+  <!--                                                                                       -->
+  <!-- 10/13/2008 - David Sturdivant                                                         -->
+  <!--   *  Initial Creation                                                                 -->
+  <!-- 11/05/2008 - David Sturdivant                                                         -->
+  <!--   *  Added Search by node support                                                     -->
+  <!-- ************************************************************************************* -->
+  <xs:include schemaLocation="BaseTypes.xsd"/>
+
+  <xs:element name="Message" block="#all" final="#all">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Options"        type="FINDCOURTSESSION.OPTIONS"        minOccurs="1" maxOccurs="1" />
+        <xs:element name="SearchCriteria" type="FINDCOURTSESSION.SEARCHCRITERIA" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="MessageType"     type="FINDCOURTSESSION.MESSAGETYPENAME" use="required" />
+      <xs:attribute name="NodeID"          type="FINDCOURTSESSION.NODEID"          use="required" />
+      <xs:attribute name="ReferenceNumber" type="BASE.REQUIREDSTRING50"            use="required" />
+      <xs:attribute name="UserID"          type="BASE.REQUIREDPOSINT"              use="required" />
+      <xs:attribute name="Source"				   type="BASE.REQUIREDSTRING50"            use="required" />
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:simpleType name="FINDCOURTSESSION.NODEID">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="FINDCOURTSESSION.MESSAGETYPENAME">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FindCourtSession" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="FINDCOURTSESSION.OPTIONS">
+    <xs:sequence>
+      <xs:element name="Nodes"                type="FINDCOURTSESSION.OPTIONS.NODES" minOccurs="1" maxOccurs="1" />
+      <xs:element name="MaxNumberOfResults"   type="BASE.REQUIREDPOSINT"            minOccurs="1" maxOccurs="1" />
+      <xs:element name="IncludeAdHocHearings" type="BASE.REQUIREDTEXTBOOLMIXEDCASE" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FINDCOURTSESSION.SEARCHCRITERIA">
+    <xs:sequence>
+      <xs:element name="Resources"    type="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCES"    minOccurs="0" maxOccurs="1" />
+      <xs:element name="StartDate"    type="BASE.REQUIREDDATE"                            minOccurs="1" maxOccurs="1" />
+      <xs:element name="EndDate"      type="BASE.REQUIREDDATE"                            minOccurs="0" maxOccurs="1" />
+      <xs:element name="Calendars"    type="FINDCOURTSESSION.SEARCHCRITERIA.CALENDARS"    minOccurs="0" maxOccurs="1" />
+      <xs:element name="HearingTypes" type="FINDCOURTSESSION.SEARCHCRITERIA.HEARINGTYPES" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FINDCOURTSESSION.OPTIONS.NODES">
+    <xs:choice>
+      <xs:element name="All"  type="BASE.REQUIREDTEXTBOOLMIXEDCASETRUE"  minOccurs="1" maxOccurs="1" />
+      <xs:element name="List" type="FINDCOURTSESSION.OPTIONS.NODES.LIST" minOccurs="1" maxOccurs="1" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="FINDCOURTSESSION.OPTIONS.NODES.LIST">
+    <xs:sequence>
+      <xs:element name="SearchNodeID" type="BASE.REQUIREDNONNEGINT" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCES">
+    <xs:sequence>
+      <xs:group   ref ="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:group name="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP">
+    <xs:choice>
+      <xs:element name="CourtReporter"   type="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP.RESOURCE" />
+      <xs:element name="CourtStaff"      type="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP.RESOURCE" />
+      <xs:element name="Equipment"       type="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP.RESOURCE" />
+      <xs:element name="JudicialOfficer" type="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP.RESOURCE" />
+      <xs:element name="Location"        type="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP.RESOURCE" />
+      <xs:element name="Magistrate"      type="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP.RESOURCE" />
+    </xs:choice>
+  </xs:group>
+  
+  <xs:complexType name="FINDCOURTSESSION.SEARCHCRITERIA.RESOURCEGROUP.RESOURCE">
+    <xs:sequence>
+      <xs:element name="Resource" type="BASE.USERCODE" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FINDCOURTSESSION.SEARCHCRITERIA.CALENDARS">
+    <xs:sequence>
+      <xs:element name="Calendar" type="BASE.USERCODE" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FINDCOURTSESSION.SEARCHCRITERIA.HEARINGTYPES">
+    <xs:sequence>
+      <xs:element name="HearingType" type="BASE.USERCODE" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

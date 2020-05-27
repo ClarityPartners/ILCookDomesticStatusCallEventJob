@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ************************************************************************************* -->
+<!-- Copyright (c) 2007 by Tyler Technologies.                                             -->
+<!--                                                                                       -->
+<!-- This program code is furnished under a license and may be used and copied only in     -->
+<!-- accordance with the terms of such license and with the inclusion of the above         -->
+<!-- copyright notice.  This program code or any other copies thereof may not be provided  -->
+<!-- or otherwise made available to any other persons.                                     -->
+<!-- ************************************************************************************* -->
+<!--                                                                                       -->
+<!-- HISTORY                                                                               -->
+<!--                                                                                       -->
+<!-- 10/20/2008 - Kerry Gasque                                                             -->
+<!--   *  Initial Creation                                                                 -->
+<!-- ************************************************************************************* -->
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+            elementFormDefault="qualified">
+  <xs:include schemaLocation="BaseTypes.xsd" />
+
+  <xs:element name="Result" block="#all" final="#all">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SessionID"                  type="BASE.REQUIREDPOSINT"              minOccurs="1" maxOccurs="1" />
+        <xs:element name="Calendar"                   type="BASE.USERCODE"                    minOccurs="1" maxOccurs="1" />
+        <xs:element name="Date"                       type="BASE.DATE"                        minOccurs="1" maxOccurs="1" />
+        <xs:element name="Description"                type="BASE.REQUIREDSTRING60"            minOccurs="1" maxOccurs="1" />
+        <xs:element name="StartTime"                  type="BASE.REQUIREDTIME"                minOccurs="1" maxOccurs="1" />
+        <xs:element name="EndTime"                    type="BASE.REQUIREDTIME"                minOccurs="1" maxOccurs="1" />
+        <xs:element name="SessionType"                type="BASE.USERCODE"                    minOccurs="0" maxOccurs="1" />
+        <xs:element name="StartAtType"                type="CourtSession.StartAtTypes"        minOccurs="1" maxOccurs="1" />
+        <xs:element name="Status"                     type="CourtSession.Statuses"            minOccurs="1" maxOccurs="1" />
+        <xs:element name="Deleted"                    type="BASE.REQUIREDTEXTBOOL"            minOccurs="1" maxOccurs="1" />
+        <xs:element name="Capacity"                   type="CourtSession.Capacity"            minOccurs="1" maxOccurs="1" />
+        <xs:element name="Resources"                  type="CourtSession.Resources"           minOccurs="0" maxOccurs="1" />
+        <xs:element name="SessionBlocks"              type="CourtSession.SessionBlocks"       minOccurs="1" maxOccurs="1" />
+        <xs:element name="AuditInformation"           type="CourtSession.AuditInformation"    minOccurs="1" maxOccurs="1" />
+        <xs:element name="SessionComment"             type="BASE.REQUIREDSTRING3500"          minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="CourtSession.StartAtTypes">
+    <xs:restriction base="BASE.REQUIREDSTRING20">
+      <xs:enumeration value="DifferentTimes" />
+      <xs:enumeration value="RegularIntervals" />
+      <xs:enumeration value="SameTime" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CourtSession.Statuses">
+    <xs:restriction base="BASE.REQUIREDSTRING20">
+      <xs:enumeration value="Open" />
+      <xs:enumeration value="Closed" />
+      <xs:enumeration value="Full" />
+      <xs:enumeration value="AdHoc" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="CourtSession.Capacity">
+    <xs:sequence>
+      <xs:element name="Count"                        type="CourtSession.Capacity.CountDuration" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Duration"                     type="CourtSession.Capacity.CountDuration" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.Capacity.CountDuration">
+    <xs:sequence>
+      <xs:element name="Current"                      type="BASE.REQUIREDNONNEGINT"           minOccurs="1" maxOccurs="1" />
+      <xs:element name="Limit"                        type="BASE.REQUIREDPOSINT"              minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.Resources">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="CourtReporter"                type="CourtSession.Resources.Types" />
+      <xs:element name="CourtStaff"                   type="CourtSession.Resources.Types" />
+      <xs:element name="Equipment"                    type="CourtSession.Resources.Types" />
+      <xs:element name="JudicialOfficer"              type="CourtSession.Resources.Types" />
+      <xs:element name="Location"                     type="CourtSession.Resources.Types" />
+      <xs:element name="Magistrate"                   type="CourtSession.Resources.Types" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.Resources.Types">
+    <xs:sequence>
+      <xs:element name="Type"                         type="BASE.USERCODE"                    minOccurs="1" maxOccurs="1" />
+      <xs:element name="Resource"                     type="BASE.USERCODE"                    minOccurs="0" maxOccurs="1" />
+      <xs:element name="NeededToSchedule"             type="BASE.REQUIREDTEXTBOOL"            minOccurs="1" maxOccurs="1" />
+      <xs:element name="NeededToHold"                 type="BASE.REQUIREDTEXTBOOL"            minOccurs="1" maxOccurs="1" />
+      <xs:element name="NeededToResult"               type="BASE.REQUIREDTEXTBOOL"            minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.SessionBlocks">
+    <xs:sequence>
+      <xs:element name="SessionBlock"                 type="CourtSessions.SessionBlocks.SessionBlock" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSessions.SessionBlocks.SessionBlock">
+    <xs:sequence>
+      <xs:element name="SessionBlockID"               type="BASE.REQUIREDPOSINT"              minOccurs="1" maxOccurs="1" />
+      <xs:element name="StartTime"                    type="BASE.REQUIREDTIME"                minOccurs="1" maxOccurs="1" />
+      <xs:element name="EndTime"                      type="BASE.REQUIREDTIME"                minOccurs="1" maxOccurs="1" />
+      <xs:element name="Settings"                     type="CourtSession.SessionBlocks.Settings" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.SessionBlocks.Settings">
+    <xs:sequence>
+      <xs:element name="Setting"                      type="CourtSession.SessionBlocks.Setting" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.SessionBlocks.Setting">
+    <xs:sequence>
+      <xs:element name="SettingID"                    type="BASE.REQUIREDPOSINT"              minOccurs="1" maxOccurs="1" />
+      <xs:element name="Sequence"                     type="BASE.REQUIREDPOSINT"              minOccurs="0" maxOccurs="1" />
+      <xs:element name="StartTime"                    type="BASE.REQUIREDTIME"                minOccurs="1" maxOccurs="1" />
+      <xs:element name="EndTime"                      type="BASE.REQUIREDTIME"                minOccurs="0" maxOccurs="1" />
+      <xs:element name="InterpreterNeeded"            type="BASE.REQUIREDTEXTBOOL"            minOccurs="1" maxOccurs="1"/>
+      <xs:element name="Interpreters"                 type="CourtSession.Interpreters"        minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.AuditInformation">
+    <xs:sequence>
+      <xs:element name="CreatedOn"                    type="CourtSession.AuditInformation.DateTime" minOccurs="1" maxOccurs="1" />
+      <xs:element name="ModifiedOn"                   type="CourtSession.AuditInformation.DateTime" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.AuditInformation.DateTime">
+    <xs:sequence>
+      <xs:element name="Date"                         type="BASE.REQUIREDDATE"                minOccurs="1" maxOccurs="1" />
+      <xs:element name="Time"                         type="BASE.REQUIREDTIME"                minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CourtSession.Interpreters">
+    <xs:sequence>
+      <xs:element name="Interpreter"                  type="CourtSession.Interpreter"         minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CourtSession.Interpreter">
+    <xs:sequence>
+      <xs:element name="LanguageType"                 type="BASE.USERCODE"                    minOccurs="1" maxOccurs="1"/>
+      <xs:element name="InterpreterCode"              type="BASE.USERCODE"                    minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

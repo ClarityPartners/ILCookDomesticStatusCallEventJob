@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ************************************************************************************* -->
+<!-- Copyright (c) 2007 by Tyler Technologies.                                             -->
+<!--                                                                                       -->
+<!-- This program code is furnished under a license and may be used and copied only in     -->
+<!-- accordance with the terms of such license and with the inclusion of the above         -->
+<!-- copyright notice.  This program code or any other copies thereof may not be provided  -->
+<!-- or otherwise made available to any other persons.                                     -->
+<!-- ************************************************************************************* -->
+<!--                                                                                       -->
+<!-- HISTORY                                                                               -->
+<!--                                                                                       -->
+<!-- 10/13/2008 - David Sturdivant                                                         -->
+<!--   *  Initial Creation                                                                 -->
+<!-- ************************************************************************************* -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" elementFormDefault="qualified">
+  <xs:include schemaLocation="BaseTypes.xsd" />
+  
+  <xs:element name="Result" block="#all" final="#all">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Sessions" type="FINDCOURTSESSION.SESSIONS" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="FINDCOURTSESSION.SESSIONS">
+    <xs:sequence>
+      <xs:element name="TotalResults" type="BASE.REQUIREDNONNEGINT"   minOccurs="1" maxOccurs="1" />
+      <xs:element name="Session"      type="FINDCOURTSESSION.SESSION" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="FINDCOURTSESSION.SESSION">
+    <xs:sequence>
+      <xs:element name="SessionID" type="BASE.REQUIREDPOSINT"             minOccurs="1" maxOccurs="1" />
+      <xs:element name="NodeID"    type="BASE.REQUIREDPOSINT"             minOccurs="1" maxOccurs="1" />
+      <xs:element name="Type"      type="BASE.USERCODE"                   minOccurs="0" maxOccurs="1" />
+      <xs:element name="Calendar"  type="BASE.USERCODE"                   minOccurs="1" maxOccurs="1" />
+      <xs:element name="StartTime" type="BASE.REQUIREDTIME"               minOccurs="1" maxOccurs="1" />
+      <xs:element name="EndTime"   type="BASE.REQUIREDTIME"               minOccurs="1" maxOccurs="1" />
+      <xs:element name="Date"      type="BASE.REQUIREDDATE"               minOccurs="1" maxOccurs="1" />
+      <xs:element name="Status"    type="FINDCOURTSESSION.SESSION.STATUS" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="FINDCOURTSESSION.SESSION.STATUS">
+    <xs:restriction base="BASE.REQUIREDSTRING">
+      <xs:enumeration value="Open" />
+      <xs:enumeration value="Closed" />
+      <xs:enumeration value="Full" />
+      <xs:enumeration value="AdHoc" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

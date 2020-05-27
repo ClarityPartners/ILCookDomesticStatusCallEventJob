@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package name="ILCookDomesticStatusCalEventJob-DB" version="1.0.0.0" xmlns:atlas="atlas">
+  <atlas:job id="8ea2bbcc-fffa-4de7-a0d2-ba45f049f0f7"
+             word="ILCookDomStCalEJob"
+             desc="IL Cook Domestic Status Calendar Event Job"
+             priority="1"
+             restartable="1"
+             systemjob="1"
+             productid="2"
+             registerdir="true">
+    <jobtask jobtaskid="c86b4795-8393-4b3f-8f2e-9475c8637c83"
+                   word="ILCookDomStCalEJob"
+                   desc="IL Cook Domestic Status Calendar Event Job"
+                   jobtaskcategorykey="DATA"
+                   programid="ILCookDomesticStatusCalEventJob.JobTask"
+                   parametersurl="/CustomExtensions/Infrastructure/JobProcessing/ParamModals/ILCookDomesticStatusCalEventJob.htm"
+                   parameterswidth="480"
+                   parametersheight="160"
+                   publicaccess="true"
+                   taskorder="1"
+                   successnextactionkey="E"
+                   failurenextactionkey="E"
+                   registerdir="true"/>
+  </atlas:job>
+</package>

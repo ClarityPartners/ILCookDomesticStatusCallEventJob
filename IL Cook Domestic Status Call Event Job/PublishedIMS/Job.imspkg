@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package name="ILCookDomesticStatusCalEventJob-APP" version="1.0.0.0" priority="32000" xmlns:com="com" xmlns:gac="gac" xmlns:iis="iis" xmlns:atlas="atlas">
+  <script>
+    ComponentRegistrar.UninstallAssembly("ILCookDomesticStatusCalEventJob.dll", "");
+  </script>
+  <!-- Deploy .dll to server -->
+  <com:server>
+    <asset source="Binary\ILCookDomesticStatusCalEventJob.dll"
+           target="\CustomExtensions\Binary\JobProcessing\ILCookDomesticStatusCalEventJob.dll"
+           name="ILCookDomesticStatusCalEventJob"
+           version="1.0.0.0"/>
+  </com:server>
+
+  <!-- Web Files -->
+  <asset source="Webs\ILCookDomesticStatusCalEventJob.htm"
+         target="\CustomExtensions\Webs\Infrastructure\JobProcessing\ParamModals\ILCookDomesticStatusCalEventJob.htm"
+         name="ILCookDomesticStatusCalEventJob"
+         version="1.0.0.0"/>
+</package>
